@@ -1,115 +1,68 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .login-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    <div class="container login-wrapper">
+        <div class="row login-box w-100">
+            <!-- Left Info Column -->
+            <div class="col-md-6 info-panel">
+                <img style="height: 15%; width: 100%;" src="{{ asset('backend/images/logo/logo.png') }}" class="mb-3"
+                    width="100" alt="Logo">
 
-        .login-box {
-            background: white;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
+                <h3>WELCOME TO ADMISSION 2025 PORTAL</h3>
+                <ol>
+                    <li>Register using valid <strong>Email ID</strong> and Mobile No.</li>
+                    <li>Upon successful Registration, you will receive a username and password in your Registered
+                        Email..</li>
+                    <li>Log in to the portal and provide your Personal Details upon completion click Save Details
+                        button.</li>
+                    <li>Provide Marks of Class X and XII, Aggregate percentage and other information in the Marks of X
+                        and XII Tab then click on Next/Update Marks button.</li>
+                    <li>Upload Scanned copies of your documents (as per specified file size and format; Passport Photo:
+                        100 Kb, Others : 2 Mb Max ) in the Documents Tab.</li>
 
-        .info-panel {
-            background: #2c97ea;
-            padding: 30px;
-            color: #f0f0f0;
-        }
+                    <li><strong style="color: #000;">Registration does not guarantee admission.</strong></li>
+                </ol>
 
-        .info-panel h3 {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+            </div>
 
-        .info-panel li {
-            margin-bottom: 10px;
-        }
-
-        .login-panel {
-            padding: 100px 30px;
-        }
-
-        .main_bt {
-            background: #006aff;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 5px;
-        }
-    </style>
-    </head>
-
-    <body>
-
-        <div class="container login-wrapper">
-            <div class="row login-box w-100">
-                <!-- Left Info Column -->
-                <div class="col-md-6 info-panel">
-                    <img style="height: 15%; width: 100%;" src="{{ asset('backend/images/logo/logo.png') }}" class="mb-3"
-                        width="100" alt="Logo">
-
-                    <h3>WELCOME TO ADMISSION 2025 PORTAL</h3>
-                    <ol>
-                        <li>Register using valid <strong>Email ID</strong> and Mobile No.</li>
-                        <li>Upon successful Registration, you will receive a username and password in your Registered
-                            Email..</li>
-                        <li>Log in to the portal and provide your Personal Details upon completion click Save Details
-                            button.</li>
-                        <li>Provide Marks of Class X and XII, Aggregate percentage and other information in the Marks of X
-                            and XII Tab then click on Next/Update Marks button.</li>
-                        <li>Upload Scanned copies of your documents (as per specified file size and format; Passport Photo:
-                            100 Kb, Others : 2 Mb Max ) in the Documents Tab.</li>
-
-                        <li><strong style="color: #000;">Registration does not guarantee admission.</strong></li>
-                    </ol>
-
+            <!-- Right Login Form -->
+            <div class="col-md-6 login-panel">
+                <div class="text-center mb-4">
+                    <h4>Login to Admission Portal</h4>
                 </div>
-
-                <!-- Right Login Form -->
-                <div class="col-md-6 login-panel">
-                    <div class="text-center mb-4">
-                        <h4>Login to Admission Portal</h4>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"
+                            required>
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                placeholder="Enter email" required>
-                            @error('email')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Enter password"
-                                required>
-                            @error('password')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" name="remember" id="remember"
-                                {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">Remember Me</label>
-                        </div>
-                        {{-- <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+                        @error('password')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                            {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="remember">Remember Me</label>
+                    </div>
+                    {{-- <div class="mb-3">
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}">Forgot Password?</a>
                             @endif
                         </div> --}}
-                        <button type="submit" class="main_bt w-100">Sign In</button>
-                        <div class="mt-3 text-center">
-                            Not registered yet? <a href="#">Register here</a>
-                        </div>
-                    </form>
-                </div>
+                    <button type="submit" class="main_bt w-100">Sign In</button>
+                    <div class="mt-3 text-center">
+                        Not registered yet? <a href="#">Register here</a>
+                    </div>
+                </form>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
