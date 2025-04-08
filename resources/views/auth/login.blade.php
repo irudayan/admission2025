@@ -12,7 +12,7 @@
                 <ol>
                     <li>Register using valid <strong>Email ID</strong> and Mobile No.</li>
                     <li>Upon successful Registration, you will receive a username and password in your Registered
-                        Email..</li>
+                        Email.</li>
                     <li>Log in to the portal and provide your Personal Details upon completion click Save Details
                         button.</li>
                     <li>Provide Marks of Class X and XII, Aggregate percentage and other information in the Marks of X
