@@ -1,79 +1,115 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="inner_page login">
-        <div class="full_container">
-            <div class="container">
-                <div class="center verticle_center full_height">
-                    <div class="login_section">
-                        <div class="logo_login">
-                            <div class="center">
-                                <img width="210" src="{{ asset('backend/images/logo/logo.png') }}" alt="#" />
-                            </div>
-                        </div>
-                        <div class="login_form">
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <fieldset>
-                                    <div class="field">
-                                        <label class="label_field">{{ __('Email Address') }}</label>
-                                        <input type="email" name="email" value="{{ old('email') }}" required
-                                            autocomplete="email" autofocus placeholder="E-mail" />
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="field">
-                                        <label class="label_field">{{ __('Password') }}</label>
-                                        <input type="password" name="password" placeholder="Password" name="password"
-                                            required autocomplete="current-password" />
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-                                    </div>
-                                    <div class="field">
-                                        <label class="label_field hidden">hidden label</label>
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" name="remember" id="remember"
-                                                {{ old('remember') ? 'checked' : '' }}>
+        .login-box {
+            background: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-                                            {{ __('Remember Me') }}</label>
+        .info-panel {
+            background: #2c97ea;
+            padding: 30px;
+            color: #f0f0f0;
+        }
 
+        .info-panel h3 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-                                        @if (Route::has('password.request'))
-                                            <a class="forgot" href="{{ route('password.request') }}">Forgotten Password?</a>
-                                        @endif
+        .info-panel li {
+            margin-bottom: 10px;
+        }
 
-                                        {{-- <a class="forgot" href="">Forgotten Password?</a> --}}
-                                    </div>
-                                    <div class="field margin_0">
-                                        <label class="label_field hidden">hidden label</label>
-                                        <button class="main_bt">Sing In</button>
+        .login-panel {
+            padding: 100px 30px;
+        }
 
-                                        {{-- <a class="btn btn-link "href="{{ url('/') }}" title="Go to Home Page"> <i
-                                                class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go to Home
-                                            Page</a> --}}
+        .main_bt {
+            background: #006aff;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+        }
+    </style>
+    </head>
 
-                                    </div>
-                                    <p></p>
+    <body>
 
-                                    {{--
-                                    <div class="field margin_0">
-                                        <a class="btn btn-link px-0" href="{{ url('/') }}" title="Go to Home Page">
-                                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go to Home Page
-                                        </a>
-                                    </div> --}}
-                                </fieldset>
-                            </form>
-                        </div>
+        <div class="container login-wrapper">
+            <div class="row login-box w-100">
+                <!-- Left Info Column -->
+                <div class="col-md-6 info-panel">
+                    <img style="height: 15%; width: 100%;" src="{{ asset('backend/images/logo/logo.png') }}" class="mb-3"
+                        width="100" alt="Logo">
+
+                    <h3>WELCOME TO ADMISSION 2025 PORTAL</h3>
+                    <ol>
+                        <li>Register using valid <strong>Email ID</strong> and Mobile No.</li>
+                        <li>Upon successful Registration, you will receive a username and password in your Registered
+                            Email..</li>
+                        <li>Log in to the portal and provide your Personal Details upon completion click Save Details
+                            button.</li>
+                        <li>Provide Marks of Class X and XII, Aggregate percentage and other information in the Marks of X
+                            and XII Tab then click on Next/Update Marks button.</li>
+                        <li>Upload Scanned copies of your documents (as per specified file size and format; Passport Photo:
+                            100 Kb, Others : 2 Mb Max ) in the Documents Tab.</li>
+
+                        <li><strong style="color: #000;">Registration does not guarantee admission.</strong></li>
+                    </ol>
+
+                </div>
+
+                <!-- Right Login Form -->
+                <div class="col-md-6 login-panel">
+                    <div class="text-center mb-4">
+                        <h4>Login to Admission Portal</h4>
                     </div>
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Enter email" required>
+                            @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter password"
+                                required>
+                            @error('password')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" name="remember" id="remember"
+                                {{ old('remember') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="remember">Remember Me</label>
+                        </div>
+                        {{-- <div class="mb-3">
+                            @if (Route::has('password.request'))
+                                <a href="{{ route('password.request') }}">Forgot Password?</a>
+                            @endif
+                        </div> --}}
+                        <button type="submit" class="main_bt w-100">Sign In</button>
+                        <div class="mt-3 text-center">
+                            Not registered yet? <a href="#">Register here</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
