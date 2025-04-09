@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -64,10 +65,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $profileImagePath = null;
+
+        if (isset($data['profile_image'])) {
+
+            $image = $data['profile_image'];
+            $imageName = Str::random(20) . '.' . $image->getClientOriginalExtension();
+            $profileImagePath = $image->storeAs('profile_images', $imageName, 'public');
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'profile_image' => $profileImagePath,
+
         ]);
     }
+
 }

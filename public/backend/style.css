@@ -3415,6 +3415,47 @@ td {
 }
 
 /* login.balde 08042025 */
+/* .login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    background: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.info-panel {
+    background: #2c97ea;
+    padding: 30px;
+    color: #f0f0f0;
+}
+
+.info-panel h3 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-panel li {
+    margin-bottom: 10px;
+}
+
+.login-panel {
+    padding: 100px 30px;
+}
+
+.main_bt {
+    background: #006aff;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+} */
+
 .login-wrapper {
     min-height: 100vh;
     display: flex;

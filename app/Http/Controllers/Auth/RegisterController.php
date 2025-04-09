@@ -8,34 +8,16 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Razorpay\Api\Api;
+use Session;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/home'; // Update if needed
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
@@ -43,43 +25,65 @@ class RegisterController extends Controller
 
     /**
      * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // 2MB max
+            'first_name'     => ['required', 'string', 'max:100'],
+            'last_name'      => ['required', 'string', 'max:100'],
+            'dob'            => ['required', 'date'],
+            'phone'          => ['required', 'digits:10', 'unique:users,phone'],
+            'email'          => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'profile_image'  => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
      */
     protected function create(array $data)
     {
         $profileImagePath = null;
 
         if (isset($data['profile_image'])) {
-
             $image = $data['profile_image'];
             $imageName = Str::random(20) . '.' . $image->getClientOriginalExtension();
             $profileImagePath = $image->storeAs('profile_images', $imageName, 'public');
         }
 
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'first_name'    => $data['first_name'],
+            'last_name'     => $data['last_name'],
+            'dob'           => $data['dob'],
+            'phone'         => $data['phone'],
+            'email'         => $data['email'],
+            'password'      => Hash::make($data['phone']), // password = phone number
             'profile_image' => $profileImagePath,
-
         ]);
+    }
+
+    /**
+     * Override register method to allow file handling
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $data = $request->all();
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $request->file('profile_image');
+        }
+
+        $user = $this->create($data);
+
+        // Optional: Send email/SMS credentials
+
+        // Optional: Redirect to payment
+        // return redirect()->route('razorpay.payment', ['user_id' => $user->id]);
+
+        // Auto login
+        $this->guard()->login($user);
+
+        return redirect($this->redirectPath());
     }
 }

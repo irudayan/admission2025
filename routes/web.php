@@ -36,6 +36,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
         Route::get('/', [HomeController::class, 'index'])->name('home');
 
+        // payment
+   // web.php
+Route::get('/razorpay-payment', [App\Http\Controllers\RazorpayController::class, 'paymentPage'])->name('razorpay.payment');
+Route::post('/razorpay-payment-success', [App\Http\Controllers\RazorpayController::class, 'paymentSuccess'])->name('razorpay.success');
+
+
+
         Route::delete('permissions/destroy', [PermissionsController::class, 'massDestroy'])->name('permissions.massDestroy');
         Route::resource('permissions', PermissionsController::class);
 
